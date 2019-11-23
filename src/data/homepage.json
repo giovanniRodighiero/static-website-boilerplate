@@ -1,0 +1,21 @@
+{
+    "title": "My company",
+    "services": {
+        "title": "our services",
+        "list": [
+            {
+                "title": "service one",
+                "description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Recusandae repellendus in, neque quisquam tempora illum eligendi voluptatibus eius earum ipsum! Eligendi vel molestias exercitationem iure corporis voluptas eveniet veniam eius."
+            },
+            {
+                "title": "service two",
+                "description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Recusandae repellendus in, neque quisquam tempora illum eligendi voluptatibus eius earum ipsum! Eligendi vel molestias exercitationem iure corporis voluptas eveniet veniam eius."
+            },
+            {
+                "title": "service two",
+                "description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Recusandae repellendus in, neque quisquam tempora illum eligendi voluptatibus eius earum ipsum! Eligendi vel molestias exercitationem iure corporis voluptas eveniet veniam eius."
+            }
+        ]
+    }
+    
+}

@@ -1,0 +1,18 @@
+<%- include('partials/_header'); %>
+
+<main class="homepage">
+    <h1><%= homepage.title %></h1>
+    
+    <section class="services">
+        <h2><%= homepage.services.title %></h2>
+        <% homepage.services.list.forEach(function(service){ %>
+            <h3><%= service.title %></h3>
+            <p><%= service.description %></p>
+        <% }); %>
+
+        <a href="/about.html">about</a>
+    </section>
+
+</main>
+
+<%- include('partials/_footer'); %>
