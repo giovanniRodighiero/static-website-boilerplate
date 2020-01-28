@@ -19,6 +19,9 @@ if (!mix.inProduction()) {
         // set public path for manifest file
         .setPublicPath('dist/')
 
+        // copy static files, like images
+        .copyDirectory('src/images', 'dist/images')
+
         // bundle js: (from, to)
         .js('src/scripts/index.js', 'dist/assets')
 
@@ -34,6 +37,9 @@ if (!mix.inProduction()) {
     mix
         // set public path for manifest file
         .setPublicPath('dist/')
+
+        // copy static files, like images
+        .copyDirectory('src/images', 'dist/images')
 
         // bundle js: (from, to)
         .js('src/scripts/index.js', 'dist/assets')
