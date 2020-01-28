@@ -5,4 +5,7 @@ First release.
 Adds task to copy assets from the `images` folder to the dist.
 
 # 1.1.1
-Updates deps
+Updates deps.
+
+# 1.1.2
+Updates data for homepage and adds domReady function for javascripts
