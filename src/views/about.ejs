@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h1><%= about.title %></h1>
+<%- include('partials/_header', { metatags: about.metatags }); %>
 
-    <section>
-        <p><%= about.description %></p>
-        <a href="/">home</a>
+<main class="page--about">
+    <section class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <h1><%= about.title %></h1>
+                <p><%= about.description %></p>
+            </div>
+        </div>
     </section>
-</body>
-</html>
+</main>
+
+<%- include('partials/_footer'); %>

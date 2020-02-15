@@ -1,9 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<%= metatags.lang %>">
 <head>
+    <% if (metatags.preventIndexing) { %>
+        <meta name="robots" content="noindex" />
+    <% } %>    
+    <!-- COMMON TAGS -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><%= metatags.title %></title>
+    <!-- Search Engine -->
+    <meta name="description" content="<%= metatags.description %>">
+    <meta name="image" content="<%= metatags.image %>">
+    <!-- Schema.org for Google -->
+    <meta itemprop="name" content="<%= metatags.title %>">
+    <meta itemprop="description" content="<%= metatags.description %>">
+    <meta itemprop="image" content="<%= metatags.image %>">
+    <!-- Open Graph general (Facebook, Pinterest & Google+) -->
+    <meta name="og:title" content="<%= metatags.ogTitle %>">
+    <meta name="og:description" content="<%= metatags.ogDescription %>">
+    <meta name="og:image" content="<%= metatags.image %>">
+    <meta name="og:url" content="<%= metatags.ogUrl %>">
+    <meta name="og:site_name" content="<%= metatags.ogSiteName %>">
+    <meta name="og:locale" content="<%= metatags.lang %>">
+    <!-- <meta name="og:video" content="video"> -->
+    <meta name="og:type" content="website">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="<%= metatags.twitterTitle %>">
+    <meta name="twitter:description" content="<%= metatags.twitterDescription %>">
+
     <link rel="stylesheet" href="/assets/index.css?id=<%= timestamp %>">
     <title>Document</title>
 </head>

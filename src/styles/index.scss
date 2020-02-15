@@ -1,9 +1,6 @@
-.homepage {
-    h1 {
-        color: blue;
-    }
-    .services {
-        display: block;
-    }
-}
+// VENDORS CONFIG
+@import "./grid.scss";
+@import "./sass-mq";
 
+// GLOBAL SETTINGS
+@import "./globals";

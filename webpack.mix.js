@@ -14,7 +14,7 @@ const contents = {
     timestamp: Date.now()
 };
 
-if (!mix.inProduction()) {
+if (process.env.NODE_ENV === 'development') {
     mix
         // set public path for manifest file
         .setPublicPath('dist/')
@@ -48,9 +48,7 @@ if (!mix.inProduction()) {
         .sass('src/styles/index.scss', 'dist/assets')
 
         // compile ejs templates: (from, to, contents, options)
-        .ejs('src/views', 'dist', contents,
-            { rmWhitespace: true, partials: 'src/views/partials' }
-        )
+        .ejs('src/views', 'dist', contents, { rmWhitespace: true, partials: 'src/views/partials' })
 
         // clean dist directory and compress assets
         .webpackConfig({ plugins: [ new CleanWebpackPlugin(), new CompressionPlugin()] })

@@ -1,7 +1,13 @@
-<%- include('partials/_header'); %>
+<%- include('partials/_header', { metatags: homepage.metatags }); %>
 
-<main class="homepage">
-    <h1><%= homepage.title %></h1>
+<main class="page--homepage">
+    <section class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <h1><%= homepage.title %></h1>
+            </div>
+        </div>
+    </section>
     
     <section class="services">
         <h2><%= homepage.services.title %></h2>
