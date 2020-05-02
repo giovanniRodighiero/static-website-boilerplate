@@ -3,16 +3,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 require('laravel-mix-ejs');
 
-const homepage = require('./src/data/homepage');
-const about = require('./src/data/about');
-const contacts = require('./src/data/contacts');
+const markdownToEjsToHtml = require('./markdownToEjsToHtml');
 
-const contents = {
-    homepage,
-    about,
-    contacts,
-    timestamp: Date.now()
-};
+mix.extend('markdownToEjsToHtml', markdownToEjsToHtml);
 
 if (!mix.inProduction()) {
     mix
@@ -28,8 +21,10 @@ if (!mix.inProduction()) {
         // compile sass and add css3 prefixes: (from, to)
         .sass('src/styles/index.scss', 'dist/assets')
 
+        .markdownToEjsToHtml('src/data', 'src/views', 'dist', { rmWhitespace: true, partials: 'src/views/partials' })
+
         // compile ejs templates: (from, to, contents, options)
-        .ejs('src/views', 'dist', contents, { rmWhitespace: true, partials: 'src/views/partials' })
+        // .ejs('src/views', 'dist', contents, { rmWhitespace: true, partials: 'src/views/partials' })
 
         // server assets and sync with browser sync
         .browserSync({ server: 'dist', proxy: null })
