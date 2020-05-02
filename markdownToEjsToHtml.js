@@ -1,4 +1,5 @@
 const fs = require('fs').promises;
+const Watch = require('fs').watch;
 const { promisify } = require('util')
 const Markdown = require('markdown-it');
 const Ejs = require('ejs');
@@ -47,29 +48,67 @@ async function getFiles (basepath, subfolders = []) {
     }
 }
 
-async function markdownToEjsToHtml (webpackConfig, ...options) {
+
+async function main (webpackConfig, ...options) {
     const [ pathToContents, pathToTemplates, pathToDist, ejsOptions ] = options;
 
     const contents = {
         timestamp: Date.now()
     };
 
-    try {
+    Watch(pathToContents, { encoding: 'utf8', recursive: true }, async (event, filename) => {
+        console.log('Reloading template ', filename)
+        const foldersAndFile = filename.split('/');
+        const subfolders = foldersAndFile.slice(0, foldersAndFile.length - 1);
+        const sourceFilePath = {
+            basepath: pathToContents,
+            subfolders,
+            name: foldersAndFile[foldersAndFile.length - 1].split('.md')[0],
+        }
+        try {
+            await markdownToEjsToHtml(sourceFilePath);
+        } catch (error) {
+            console.error(error);
+        }
+    });
+    
+    Watch(pathToTemplates, { encoding: 'utf8', recursive: true }, async (event, filename) => {
+        console.log('Reloading all due to template edit ', filename)
         const sourceFilesPaths = await getFiles(pathToContents);
 
         for (const sourceFilePath of sourceFilesPaths) {
+            try {
+                await markdownToEjsToHtml(sourceFilePath);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    });
+
+    const sourceFilesPaths = await getFiles(pathToContents);
+
+    for (const sourceFilePath of sourceFilesPaths) {
+        try {
+            await markdownToEjsToHtml(sourceFilePath);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function markdownToEjsToHtml (sourceFilePath) {
+        try {
             let subfoldersPath = sourceFilePath.name;
             if (sourceFilePath.subfolders.length > 0)
                 subfoldersPath = `${sourceFilePath.subfolders.join('/')}/${sourceFilePath.name}`;
-
+    
             const sourceFile = await fs.readFile(`${pathToContents}/${subfoldersPath}.md`, { encoding: 'utf8' });
-
+    
             const [ _, rawFrontmatter, rawMarkdown ] = sourceFile.split(frontmatterRegExp);
             const frontmatter = JSON.parse('{' + rawFrontmatter.trim() + '}');
             const markdown = md.render(rawMarkdown.trim());
-
+    
             let pathToTemplate = `${pathToTemplates}/${subfoldersPath}`;
-
+    
             if (frontmatter._template) {
                 contents.page = frontmatter;
                 contents.page.markdown = markdown;
@@ -78,7 +117,7 @@ async function markdownToEjsToHtml (webpackConfig, ...options) {
                 contents[sourceFilePath.name] = frontmatter;
                 contents[sourceFilePath.name].markdown = markdown;
             }
-
+    
             const html = await renderFile(`${pathToTemplate}.ejs`, contents, ejsOptions);
             try {
                 await fs.access(`${pathToDist}/${subfoldersPath}.html`);
@@ -87,15 +126,17 @@ async function markdownToEjsToHtml (webpackConfig, ...options) {
             } finally {
                 await fs.writeFile(`${pathToDist}/${subfoldersPath}.html`, html);
             }
+            
+        } catch (error) {
+            throw error;
         }
-        
-    } catch (error) {
-        console.error(error)
-    }
-};
+    };
+}
+
+
 
 // markdownToEjsToHtml('', 'src/data', 'src/views', 'dist', { rmWhitespace: true, partials: 'src/views/partials' })
 
 // getFiles('src/data').then(paths => console.log(paths)).catch(e => console.log(e))
 
-module.exports = markdownToEjsToHtml;
+module.exports = main;
